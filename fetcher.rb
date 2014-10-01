@@ -20,7 +20,9 @@ module TwitterTools
 
     def fetch_my_timeline
       @client.user_timeline.each do |post|
-        @posts.update({id: post.id}, post.to_h, upsert: true)
+        post_to_store = post.to_h
+        post_to_store[:created_at] = Time.parse(post_to_store[:created_at])
+        @posts.update({id: post.id}, post_to_store, upsert: true)
       end
     end
 
